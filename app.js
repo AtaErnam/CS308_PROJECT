@@ -1,9 +1,9 @@
 const express = require("express");
 const morgan = require("morgan");
 
-const userRouter = require("./routes/userRoutes");
-const categoryRouter = require("./routes/categoryRoutes");
-const productRouter = require("./routes/productRoutes");
+const userRouter = require("./routes/userRoute");
+const categoryRouter = require("./routes/categoryRoute");
+const productRouter = require("./routes/productRoute");
 
 const app = express();
 
