@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Category = require("./categoryModel");
-const Option = require("./optionModel");
 
 const productSchema = new mongoose.Schema({
   createdAt: {
@@ -9,6 +8,11 @@ const productSchema = new mongoose.Schema({
     select: false,
   },
   productName: String,
+  model: String,
+  description: String,
+  quantity_in_stocks: String,
+  warranty_status: String,
+  distributor_info: String,
   categoryName: {
     type: String,
   },
