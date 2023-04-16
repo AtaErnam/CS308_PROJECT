@@ -9,7 +9,7 @@ const categorySchema = new mongoose.Schema(
       select: false,
     },
     categoryName: String,
-    products: [
+    productsInside: [
       {
         type: mongoose.Schema.ObjectId,
         ref: Product,
@@ -23,18 +23,38 @@ const categorySchema = new mongoose.Schema(
 );
 
 // Virtual Populate
-categorySchema.virtual('products', {
-  ref: 'Product',
-  foreignField: 'category',
-  localField: '_id',
-});
+/* categorySchema.virtual("products", {
+  ref: "Product",
+  foreignField: "category",
+  localField: "_id",
+}); */
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
-categorySchema.pre('save', function (next) {
+categorySchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
 
+// QUERY MIDDLEWARE
+// categorySchema.pre('find', function(next) {
+categorySchema.pre(/^find/, function (next) {
+  this.find({ secretCategory: { $ne: true } });
+
+  this.start = Date.now();
+  next();
+});
+
+categorySchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "productInside",
+  });
+  next();
+});
+
+categorySchema.post(/^find/, function (docs, next) {
+  console.log(`Query took ${Date.now() - this.start} milliseconds!`);
+  next();
+});
 
 const Category = mongoose.model("Category", categorySchema);
 
