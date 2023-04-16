@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const slugify = require('slugify');
 const Product = require("./productModel");
 
 const categorySchema = new mongoose.Schema(
@@ -9,12 +10,12 @@ const categorySchema = new mongoose.Schema(
       select: false,
     },
     categoryName: String,
-    productsInside: [
+    /* productsInside: [
       {
         type: mongoose.Schema.ObjectId,
         ref: Product,
       },
-    ],
+    ], */
   },
   {
     toJSON: { virtuals: true },
@@ -31,7 +32,7 @@ const categorySchema = new mongoose.Schema(
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 categorySchema.pre("save", function (next) {
-  this.slug = slugify(this.name, { lower: true });
+  this.slug = slugify(this.categoryName, { lower: true });
   next();
 });
 
@@ -44,12 +45,12 @@ categorySchema.pre(/^find/, function (next) {
   next();
 });
 
-categorySchema.pre(/^find/, function (next) {
+/* categorySchema.pre(/^find/, function (next) {
   this.populate({
     path: "productInside",
   });
   next();
-});
+}); */
 
 categorySchema.post(/^find/, function (docs, next) {
   console.log(`Query took ${Date.now() - this.start} milliseconds!`);

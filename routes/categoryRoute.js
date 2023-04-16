@@ -1,5 +1,6 @@
 const express = require("express");
 const categoryController = require("../controllers/categoryController");
+const authController = require('../controllers/authController');
 
 const categoryRouter = express.Router();
 
@@ -12,6 +13,10 @@ categoryRouter
   .route("/:id")
   .get(categoryController.getCategory)
   .patch(categoryController.updateCategory)
-  .delete(categoryController.deleteCategory);
+  .delete(
+    authController.protect,
+    authController.restrictTo("admin"),
+    categoryController.deleteCategory
+  );
 
 module.exports = categoryRouter;

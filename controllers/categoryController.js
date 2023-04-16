@@ -16,9 +16,9 @@ exports.getAllCategory = catchAsync(async (req, res) => {
   // SEND RESPONSE
   res.status(200).json({
     status: "success",
-    results: category.length,
+    results: categorys.length,
     data: {
-      category,
+      categorys,
     },
   });
 });
