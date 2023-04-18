@@ -46,3 +46,18 @@ app.all("*", (req, res, next) => {
 app.use(globalErrorHandler);
 
 module.exports = app;
+
+import React from "react";
+import Form from "./login-page/src/components/login_form";
+
+import "./login-page/App.css";
+
+function App() {
+  return (
+    <div className="App">
+      <Form />
+    </div>
+  );
+}
+
+export default App;

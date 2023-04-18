@@ -1,0 +1,83 @@
+$primary-color: #5e1e2e;
+$error-color: #ee3f4dd7;
+$bg-color: #bef1a6;
+$text-color: #380118;
+$color-white: #fff;
+
+$border-radius: 4px;
+
+.container {
+  margin-top: 5rem;
+  padding: 3rem;
+  border-radius: $border-radius;
+
+  h1 {
+    font-size: 2rem;
+    color: $text-color;
+    margin-bottom: 2rem;
+  }
+
+  label,
+  input {
+    color: $text-color;
+  }
+
+  label {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    border: 2px solid $primary-color;
+    border-radius: $border-radius;
+    padding: 1rem;
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+  }
+
+  button {
+    color: $color-white;
+    width: 100%;
+    font-size: 1.6rem;
+    background: $primary-color;
+    border-radius: $border-radius;
+    border: none;
+    cursor: pointer;
+    padding: 1rem;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      background-color: rgba($primary-color, 0.5);
+    }
+  }
+
+  .input-error {
+    border-color: $error-color;
+
+    &:focus {
+      box-shadow: 0px 0px 5px $error-color;
+    }
+  }
+
+  .error {
+    color: $error-color;
+    font-size: 1.4rem;
+    margin-top: 1rem;
+  }
+
+  .disabled-btn {
+    cursor: not-allowed;
+    background: rgba($primary-color, 0.8);
+  }
+}
