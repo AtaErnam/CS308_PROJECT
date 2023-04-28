@@ -27,6 +27,17 @@ const productSchema = new mongoose.Schema(
   }
 );
 
+//tourSchema.index({ price: 1 });
+productSchema.index({ price: 1, ratingsAverage: -1 });
+productSchema.index({ slug: 1 });
+
+// Virtual Populate
+productSchema.virtual("reviews", {
+  ref: "Review",
+  foreignField: "product",
+  localField: "_id",
+});
+
 productSchema.pre(/^find/, function (next) {
   this.populate({
     path: "category",

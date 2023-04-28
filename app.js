@@ -6,6 +6,8 @@ const AppError = require("./utils/appError");
 const userRouter = require("./routes/userRoute");
 const categoryRouter = require("./routes/categoryRoute");
 const productRouter = require("./routes/productRoute");
+const reviewRouter = require('./routes/reviewRoute');
+
 
 const app = express();
 
@@ -38,6 +40,8 @@ app.get("/", (req, res) => {
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/category", categoryRouter);
+app.use('/api/v1/reviews', reviewRouter);
+
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Cant find ${req.originalUrl} on this server!`, 404));
@@ -47,7 +51,7 @@ app.use(globalErrorHandler);
 
 module.exports = app;
 
-import React from "react";
+/* import React from "react";
 import Form from "./login-page/src/components/login_form";
 
 import "./login-page/App.css";
@@ -60,4 +64,4 @@ function App() {
   );
 }
 
-export default App;
+export default App; */
