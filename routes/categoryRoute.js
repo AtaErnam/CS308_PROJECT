@@ -1,18 +1,26 @@
 const express = require("express");
 const categoryController = require("../controllers/categoryController");
-const authController = require('../controllers/authController');
+const authController = require("../controllers/authController");
 
 const categoryRouter = express.Router();
 
 categoryRouter
   .route("/")
   .get(categoryController.getAllCategory)
-  .post(categoryController.createCategory);
+  .post(
+    authController.protect,
+    authController.restrictTo("admin"),
+    categoryController.createCategory
+  );
 
 categoryRouter
   .route("/:id")
   .get(categoryController.getCategory)
-  .patch(categoryController.updateCategory)
+  .patch(
+    authController.protect,
+    authController.restrictTo("admin"),
+    categoryController.updateCategory
+  )
   .delete(
     authController.protect,
     authController.restrictTo("admin"),

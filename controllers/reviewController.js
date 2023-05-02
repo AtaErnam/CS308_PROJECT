@@ -4,9 +4,9 @@ const factory = require("./handlerFactory");
 
 exports.getAllReviews = factory.getAll(Review);
 
-exports.setTourUserIds = (req, res, next) => {
+exports.setProductUserIds = (req, res, next) => {
   // Allow nested routes
-  if (!req.body.tour) req.body.tour = req.params.tourId;
+  if (!req.body.product) req.body.product = req.params.productId;
   req.body.user = req.user.id;
   next();
 };
@@ -18,15 +18,20 @@ exports.createReview = factory.createOne(Review);
 exports.updateReview = factory.updateOne(Review);
 
 exports.deleteReview = factory.deleteOne(Review);
-/* exports.deleteReview = catchAsync(async (req, res, next) => {
-  const review = await Review.findByIdAndDelete(req.params.id);
+
+exports.giveApproval = catchAsync(async (req, res, next) => {
+  const review = await Review.findById(req.params.id);
 
   if (!review) {
-    return next(new AppError('No review found with that ID', 404));
+    return next(new AppError("No document found with that ID", 404));
   }
 
-  res.status(204).json({
-    status: 'success',
-    data: null,
+  review.isApproved = true;
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      data: review,
+    },
   });
-}); */
+});

@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema(
     productName: String,
     model: String,
     description: String,
-    quantity_in_stocks: String,
+    quantity_in_stocks: Number,
     warranty_status: String,
     distributor_info: String,
     category: {
@@ -27,16 +27,10 @@ const productSchema = new mongoose.Schema(
   }
 );
 
+
 //tourSchema.index({ price: 1 });
 productSchema.index({ price: 1, ratingsAverage: -1 });
 productSchema.index({ slug: 1 });
-
-// Virtual Populate
-productSchema.virtual("reviews", {
-  ref: "Review",
-  foreignField: "product",
-  localField: "_id",
-});
 
 productSchema.pre(/^find/, function (next) {
   this.populate({
@@ -47,6 +41,13 @@ productSchema.pre(/^find/, function (next) {
   next();
 });
 
-const Product = mongoose.model("product", productSchema);
+// Virtual Populate
+productSchema.virtual("reviews", {
+  ref: "Review",
+  foreignField: "product",
+  localField: "_id",
+});
+
+const Product = mongoose.model("Product", productSchema);
 
 module.exports = Product;

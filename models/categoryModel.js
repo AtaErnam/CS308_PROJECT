@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const slugify = require('slugify');
-const Product = require("./productModel");
 
 const categorySchema = new mongoose.Schema(
   {
@@ -9,13 +8,14 @@ const categorySchema = new mongoose.Schema(
       default: Date.now(),
       select: false,
     },
+    slug: String,
     categoryName: String,
     /* productsInside: [
       {
         type: mongoose.Schema.ObjectId,
         ref: Product,
       },
-    ], */
+    ],  */
   },
   {
     toJSON: { virtuals: true },
@@ -23,12 +23,15 @@ const categorySchema = new mongoose.Schema(
   }
 );
 
+categorySchema.index({ slug: 1 });
+
+
 // Virtual Populate
-/* categorySchema.virtual("products", {
+categorySchema.virtual("products", {
   ref: "Product",
   foreignField: "category",
   localField: "_id",
-}); */
+});
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 categorySchema.pre("save", function (next) {

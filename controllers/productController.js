@@ -1,11 +1,14 @@
 /* eslint-disable prettier/prettier */
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
-
+const factory = require("./handlerFactory");
 const Product = require("./../models/productModel");
 const APIFeatures = require("./../utils/apiFeatures");
 
-exports.getAllProduct = catchAsync(async (req, res) => {
+
+exports.getAllProduct = factory.getAll(Product);
+
+/* exports.getAllProduct = catchAsync(async (req, res) => {
   const features = new APIFeatures(Product.find(), req.query)
     .filter()
     .sort()
@@ -21,11 +24,14 @@ exports.getAllProduct = catchAsync(async (req, res) => {
       product,
     },
   });
-});
+}); */
 
-exports.getProduct = catchAsync(async (req, res) => {
+exports.getProduct = factory.getOne(Product, { path: "reviews" });
+
+/* exports.getProduct = catchAsync(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
   // product.findOne({_id: req.params.id})
+  console.log(product);
 
   if (!product) {
     return next(new AppError("No product found with that ID", 404));
@@ -37,9 +43,11 @@ exports.getProduct = catchAsync(async (req, res) => {
       product,
     },
   });
-});
+}); */
 
-exports.createProduct = catchAsync(async (req, res) => {
+exports.createProduct = factory.createOne(Product)
+
+/* catchAsync(async (req, res,next) => {
   const product = await Product.create(req.body);
 
   if (!product) {
@@ -52,9 +60,9 @@ exports.createProduct = catchAsync(async (req, res) => {
       product: product,
     },
   });
-});
+}); */
 
-exports.updateProduct = catchAsync(async (req, res) => {
+exports.updateProduct = catchAsync(async (req, res,next) => {
   const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,

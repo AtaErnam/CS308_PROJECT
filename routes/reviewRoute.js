@@ -1,35 +1,34 @@
 /* eslint-disable prettier/prettier */
-const express = require('express');
-const reviewController = require('../controllers/reviewController');
-const authController = require('../controllers/authController');
+const express = require("express");
+const reviewController = require("../controllers/reviewController");
+const authController = require("../controllers/authController");
 
-const reviewRouter = express.Router({ mergeParams: true });
+const router = express.Router({ mergeParams: true });
 
-// tourRouter.param('id', tourController.checkID);
+router.use(authController.protect);
 
-// Create a checkBody middleware
-// Check if body contains the name and price property
-// If not, send back 400 (bad reqquest)
-
-reviewRouter
-  .route('/')
+router
+  .route("/")
   .get(reviewController.getAllReviews)
   .post(
-    authController.restrictTo('user'),
-    reviewController.setTourUserIds,
+    authController.restrictTo("customer"),
+    reviewController.setProductUserIds,
     reviewController.createReview
   );
 
-reviewRouter
-  .route('/:id')
+
+router.patch('/giveApproval/:id',authController.restrictTo('product_manager') ,reviewController.giveApproval)
+
+router
+  .route("/:id")
   .get(reviewController.getReview)
   .patch(
-    authController.restrictTo('user', 'admin'),
+    authController.restrictTo("customer", "admin"),
     reviewController.updateReview
   )
   .delete(
-    authController.restrictTo('user', 'admin'),
+    authController.restrictTo("customer", "admin"),
     reviewController.deleteReview
   );
 
-module.exports = reviewRouter;
+module.exports = router;

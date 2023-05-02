@@ -28,6 +28,11 @@ const reviewSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "Review must belong to a user"],
     },
+    isApproved: {
+      type: Boolean,
+      default: false,
+      select: true,
+    },
   },
   {
     toJSON: { virtuals: true },
@@ -80,6 +85,12 @@ reviewSchema.statics.calcAverageRatings = async function (productId) {
     });
   }
 };
+
+reviewSchema.pre(/^find/, function (next) {
+  // this points to the current query
+  this.find({ isApproved: { $ne: false } });
+  next();
+});
 
 reviewSchema.post("save", function () {
   // this points to current review
