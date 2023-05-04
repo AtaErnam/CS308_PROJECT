@@ -7,9 +7,9 @@ const ItemQuantityCounter= ({ item }) => {
     return (
         <Box borderWidth="1px" borderRadius="lg" display="inline-block">
             <Flex alignItems="center">
-                <Button variant="outline" onClick={() => removeFromCart(item._id)}>-</Button>
+                <Button colorScheme="red" variant="outline" onClick={() => removeFromCart(item._id)}>-</Button>
                 <Text mx={5}>{item.quantity}</Text>
-                <Button variant="outline" onClick={() => addToCart(item, item)}>+</Button>
+                <Button colorScheme="green" variant="outline" onClick={() => addToCart(item, item)}>+</Button>
             </Flex>
         </Box>
     );
