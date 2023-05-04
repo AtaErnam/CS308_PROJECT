@@ -32,11 +32,11 @@ router
   .route("/:id")
   .get(reviewController.getReview)
   .patch(
-    authController.restrictTo("customer", "admin"),
+    authController.restrictTo("customer", "admin", "product_manager"),
     reviewController.updateReview
   )
   .delete(
-    authController.restrictTo("customer", "admin"),
+    authController.restrictTo("customer", "admin", "product_manager"),
     reviewController.deleteReview
   );
 

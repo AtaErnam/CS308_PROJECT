@@ -11,6 +11,7 @@ const reviewSchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
+      default: 4.5,
       min: 1,
       max: 5,
     },
@@ -71,7 +72,10 @@ reviewSchema.statics.calcAverageRatings = async function (productId) {
       },
     },
   ]);
+
+  console.log("-------------");
   console.log(stats);
+  console.log("---------");
 
   if (stats.length > 0) {
     await Product.findByIdAndUpdate(productId, {
@@ -86,12 +90,6 @@ reviewSchema.statics.calcAverageRatings = async function (productId) {
   }
 };
 
-/* reviewSchema.pre(/^find/, function (next) {
-  // this points to the current query
-  this.find({ isApproved: { $ne: false } });
-  next();
-}); */
-
 reviewSchema.post("save", function () {
   // this points to current review
   this.constructor.calcAverageRatings(this.product);
@@ -101,7 +99,7 @@ reviewSchema.post("save", function () {
 // findByIdAndDelete
 reviewSchema.pre(/^findOneAnd/, async function (next) {
   this.r = await this.findOne();
-  // console.log(this.r);
+  console.log(r);
   next();
 });
 
