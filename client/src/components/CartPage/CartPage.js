@@ -8,11 +8,20 @@ import {
 	Button,
 	Box,
 	Text,
-	ButtonGroup
+	ButtonGroup,
+	Modal,
+	ModalOverlay,
+	ModalContent,
+	ModalHeader,
+	ModalFooter,
+	ModalBody,
+	ModalCloseButton,
+	useDisclosure
 } from "@chakra-ui/react";
 import ItemQuantityCounter from "../ItemQuantityCounter/ItemQuantityCounter";
 
 function CartPage() {
+	const { isOpen, onOpen, onClose } = useDisclosure()
 	const { items, emptyCart } = useCart();
 	const total = items.reduce((acc, obj) => acc + obj.quantity * obj.price, 0);
 
@@ -57,7 +66,7 @@ function CartPage() {
 					</Box>
 
                     <ButtonGroup gap="4">
-					<Button mt="2" size="md" colorScheme="green">
+					<Button mt="2" size="md" colorScheme="green" onClick={onOpen}>
 						Order
 					</Button>
                     <Button mt="2" size="md" colorScheme="red" variant="outline" leftIcon={<DeleteIcon/>}
@@ -65,6 +74,32 @@ function CartPage() {
 						Empty Cart
 					</Button>
                     </ButtonGroup>
+
+					<Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+						<ModalOverlay />
+						<ModalContent>
+							<ModalHeader>Sign Up or Login</ModalHeader>
+							<ModalCloseButton />
+							<ModalBody>
+								<Text fontWeight='bold' mb='1rem'>
+									You need to sign up or login in order to complete your purchase.
+								</Text>
+							</ModalBody>
+
+							<ModalFooter>
+								<Link to="/signup">
+									<Button colorScheme='blue' mr={3}>
+										Sign Up
+									</Button>
+								</Link>
+								<Link to="/signin">
+									<Button colorScheme='blue' mr={3}>
+										Login
+									</Button>
+								</Link>
+							</ModalFooter>
+						</ModalContent>
+					</Modal>
                     
 				</>
 			)}
