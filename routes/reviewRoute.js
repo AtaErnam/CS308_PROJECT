@@ -7,17 +7,26 @@ const router = express.Router({ mergeParams: true });
 
 router.use(authController.protect);
 
+router.route("/approved").get(reviewController.getAllApprovedReviews);
+
 router
   .route("/")
-  .get(reviewController.getAllReviews)
+  .get(
+    authController.restrictTo("product_manager"),
+    reviewController.getAllReviews
+  )
   .post(
     authController.restrictTo("customer"),
     reviewController.setProductUserIds,
     reviewController.createReview
   );
 
-
-router.patch('/giveApproval/:id',authController.restrictTo('product_manager') ,reviewController.giveApproval)
+router
+  .route("/giveApproval/:id")
+  .patch(
+    authController.restrictTo("product_manager"),
+    reviewController.giveApproval
+  );
 
 router
   .route("/:id")

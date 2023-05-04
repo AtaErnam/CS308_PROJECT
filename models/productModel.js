@@ -27,7 +27,6 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-
 //tourSchema.index({ price: 1 });
 productSchema.index({ price: 1, ratingsAverage: -1 });
 productSchema.index({ slug: 1 });

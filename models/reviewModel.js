@@ -40,7 +40,7 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
-reviewSchema.index({ product: 1, user: 1 }, { unique: true });
+//reviewSchema.index({ product: 1, user: 1 }, { unique: true });
 
 reviewSchema.pre(/^find/, function (next) {
   // this.populate({
@@ -86,11 +86,11 @@ reviewSchema.statics.calcAverageRatings = async function (productId) {
   }
 };
 
-reviewSchema.pre(/^find/, function (next) {
+/* reviewSchema.pre(/^find/, function (next) {
   // this points to the current query
   this.find({ isApproved: { $ne: false } });
   next();
-});
+}); */
 
 reviewSchema.post("save", function () {
   // this points to current review
