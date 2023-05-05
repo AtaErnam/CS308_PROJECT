@@ -1,7 +1,10 @@
-const { Order } = require("../models/order");
+const { Order } = require("../models/orderModel");
 const express = require("express");
-const { OrderItem } = require("../models/order-item");
+const { OrderItem } = require("../models/orderItemModel");
 const router = express.Router();
+const authController = require("../controllers/authController");
+
+router.use(authController.protect);
 
 router.get(`/`, async (req, res) => {
   const orderList = await Order.find()
@@ -146,7 +149,7 @@ router.get(`/get/userorders/:userid`, async (req, res) => {
       },
     })
     .sort({ dateOrdered: -1 });
-
+ 
   if (!userOrderList) {
     res.status(500).json({ success: false });
   }

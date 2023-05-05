@@ -8,7 +8,7 @@ const orderSchema = mongoose.Schema({
       required: true,
     },
   ],
-  shippingAddress1: {
+  /* shippingAddress1: {
     type: String,
     required: true,
   },
@@ -35,10 +35,10 @@ const orderSchema = mongoose.Schema({
     type: String,
     required: true,
     default: "Pending",
-  },
-  totalPrice: {
+  }, */
+  /* totalPrice: {
     type: Number,
-  },
+  }, */
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
