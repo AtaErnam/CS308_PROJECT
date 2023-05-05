@@ -1,24 +1,90 @@
 .products {
-    max-width: 60rem;
-    width: 90%;
-    margin: 2rem auto;
-    animation: meals-appear 1s ease-out forwards;
+  max-width: 60rem;
+  width: 90%;
+  margin: 2rem auto;
+  animation: meals-appear 1s ease-out forwards;
+}
+
+.products ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sort-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.sort-button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  background-color: #ccf0ea;
+  color: #0097a7;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.sort-button:hover {
+  background-color: #07c2a3;
+}
+
+
+@keyframes products-appear {
+  from {
+    opacity: 0;
+    transform: translateY(3rem);
   }
-  
-  .products ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  @keyframes products-appear {
-    from {
-      opacity: 0;
-      transform: translateY(3rem);
-    }
-  
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+}
+/* Styling for the select dropdown */
+input {
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-bottom: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+select {
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-bottom: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+/* Styling for the product list items */
+div {
+  padding: 16px;
+
+  margin-bottom: 16px;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+p {
+  margin: 0;
+}
+
+/* Styling for the product category */
+.category {
+  font-weight: bold;
+  margin-bottom: 8px;
+}

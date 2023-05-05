@@ -1,7 +1,8 @@
-import { useContext } from 'react';
-import React from "react";
-import { Button } from "@chakra-ui/react";
-import { useCart } from "../../store/cartProvider";
+import { useContext, React } from 'react';
+// import { Button } from "@chakra-ui/react";
+// import { useCart } from "../../store/cartProvider";
+import { Link } from 'react-router-dom';
+
 import Modal from '../UI/Modal';
 import CartItem from './CartItem';
 import classes from './Cart.module.css';
@@ -36,10 +37,6 @@ const Cart = (props) => {
     </ul>
   );
 
-  const orderHandler = () => {
-    props.onOrder();
-  };
-
   return (
     <Modal onClose={props.onClose}>
       {cartItems}
@@ -51,11 +48,7 @@ const Cart = (props) => {
         <button className={classes['button--alt']} onClick={props.onClose}>
           Close
         </button>
-        {hasItems && (
-          <button className={classes.button} onClick={orderHandler}>
-            Order
-          </button>
-        )}
+        {hasItems && <Link onClick={props.onClose} to={"/purchase"}>Order </Link>}
       </div>
     </Modal>
   );
