@@ -19,6 +19,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(cors());
+app.options('*', cors());
 app.use(express.json());
 
 app.use((req, res, next) => {

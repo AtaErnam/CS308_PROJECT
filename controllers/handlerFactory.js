@@ -1,7 +1,14 @@
 /* eslint-disable prettier/prettier */
+const axios = require("axios");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const APIFeatures = require("./../utils/apiFeatures");
+
+function giveFullUrl(req) {
+  var fullUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
+  console.log(fullUrl);
+  return fullUrl;
+}
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
@@ -72,6 +79,8 @@ exports.getAll = (Model) =>
     // To allow for nested GET reviews on Tour
     let filter = {};
     if (req.params.productId) filter = { product: req.params.productId };
+
+    var fullUrl = giveFullUrl(req);
 
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
