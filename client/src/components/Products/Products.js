@@ -5,6 +5,7 @@ import AvailableProducts from "./AvailableProducts";
 const Products = () => {
     return <Fragment>
         <ProductsSum />
+        
         <AvailableProducts />
     </Fragment>
 };

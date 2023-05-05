@@ -1,4 +1,7 @@
-import { useContext } from 'react';
+import { useContext, React } from 'react';
+// import { Button } from "@chakra-ui/react";
+// import { useCart } from "../../store/cartProvider";
+import { Link } from 'react-router-dom';
 
 import Modal from '../UI/Modal';
 import CartItem from './CartItem';
@@ -45,7 +48,7 @@ const Cart = (props) => {
         <button className={classes['button--alt']} onClick={props.onClose}>
           Close
         </button>
-        {hasItems && <button className={classes.button}>Order</button>}
+        {hasItems && <Link onClick={props.onClose} to={"/purchase"}>Order </Link>}
       </div>
     </Modal>
   );
