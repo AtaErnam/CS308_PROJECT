@@ -25,7 +25,7 @@ const sendEmail = async (options) => {
   };
 
   // 3) Actually send the email
-  await transporter.sendMail(mailOptions);
+  let info = await transporter.sendMail(mailOptions);
 };
 
 module.exports = sendEmail;
