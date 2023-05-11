@@ -48,7 +48,13 @@ const Cart = (props) => {
         <button className={classes['button--alt']} onClick={props.onClose}>
           Close
         </button>
-        {hasItems && <Link onClick={props.onClose} to={"/purchase"}>Order </Link>}
+        
+        
+        <br></br>
+        <button className={classes['button--alt']} > Go to Purchase
+        </button>
+        {hasItems && <Link onClick={props.onClose} to={"/purchase"}>  .</Link>}
+
       </div>
     </Modal>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik } from "formik";
 import { Link } from "react-router-dom";
 import "./LoginPage.scss";
@@ -9,23 +9,34 @@ const LoginPage = () => {
     password: "",
   };
 
-  const submitForm = async (values) => {
-    try {
-      const response = await fetch("http://127.0.0.1:8080/api/v1/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-      const data = await response.json();
-      if (data.error) {
-        // setError(data.error);
-      } else {
-        // continue to dashboard
-      }
-    } catch (error) {
-      // setError("User not found.");
+  const [loginError, setLoginError] = useState(false);
+
+  // Dummy users for authentication
+  const dummyUsers = [
+    {
+      email: "alp@test.com",
+      password: "alp123",
+    },
+    {
+      email: "ata@test.com",
+      password: "ata123",
+    },
+    {
+      email: "helin@test.com",
+      password: "helin123",
+    },
+  ];
+
+  const submitForm = (values) => {
+    const user = dummyUsers.find(
+      (user) => user.email === values.email && user.password === values.password
+    );
+
+    if (user) {
+      setLoginError(false);
+      alert("Logged In"); // Display a pop-up message when logged in
+    } else {
+      setLoginError(true);
     }
   };
 
@@ -112,11 +123,18 @@ const LoginPage = () => {
               >
                 Sign In
               </button>
+
+              {loginError && (
+                <p className="error">User Not Found</p>
+              )}
             </form>
             <br></br>
             <Link to="/">
               <button>Go to Main Page</button>
             </Link>
+            <br></br>
+            <br></br>
+
             <br></br>
             <br></br>
             <Link to="/signup">
