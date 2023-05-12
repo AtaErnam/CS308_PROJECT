@@ -4,7 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 const factory = require("./handlerFactory");
 const Product = require("./../models/productModel");
 const APIFeatures = require("./../utils/apiFeatures");
-
+const User = require("../models/userModel");
 
 exports.getAllProduct = factory.getAll(Product);
 
@@ -45,7 +45,7 @@ exports.getProduct = factory.getOne(Product, { path: "reviews" });
   });
 }); */
 
-exports.createProduct = factory.createOne(Product)
+exports.createProduct = factory.createOne(Product);
 
 /* catchAsync(async (req, res,next) => {
   const product = await Product.create(req.body);
@@ -62,7 +62,7 @@ exports.createProduct = factory.createOne(Product)
   });
 }); */
 
-exports.updateProduct = catchAsync(async (req, res,next) => {
+exports.updateProduct = catchAsync(async (req, res, next) => {
   const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -76,6 +76,54 @@ exports.updateProduct = catchAsync(async (req, res,next) => {
     status: "success",
     data: {
       product: product,
+    },
+  });
+});
+
+exports.addProductToWishlist = catchAsync(async (req, res, next) => {
+  const product = await Product.findById(req.params.id);
+
+  if (!product) {
+    return next(new AppError("No product found with that ID", 404));
+  }
+
+  const currUser = await User.findById(req.user.id);
+  console.log(currUser.wishlist);
+  currUser.wishlist.push(product);
+  console.log(currUser.wishlist);
+  const user = await User.findByIdAndUpdate(req.user.id, currUser);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      product: currUser.wishlist,
+    },
+  });
+});
+
+function removeObjectWithId(arr, id) {
+  // Making a copy with the Array from() method
+
+  const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
+  arr.splice(objWithIdIndex, 1);
+  return arr;
+}
+
+exports.removeProductFromWishlist = catchAsync(async (req, res, next) => {
+  const product = await Product.findById(req.params.id);
+
+  if (!product) {
+    return next(new AppError("No product found with that ID", 404));
+  }
+
+  const currUser = await User.findById(req.user.id);
+  currUser.wishlist = removeObjectWithId(currUser.wishlist, req.params.id);
+  const user = await User.findByIdAndUpdate(req.user.id, currUser);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      product: user,
     },
   });
 });

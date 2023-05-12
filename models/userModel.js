@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const Product = require("./productModel");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -21,6 +22,13 @@ const userSchema = new mongoose.Schema({
   homeAddress: {
     type: String,
   },
+  wishlist: [
+    {
+      type: mongoose.ObjectId,
+      ref: "Product",
+      default: [],
+    },
+  ],
   role: {
     type: String,
     enum: ["customer", "product_manager", "sales_manager", "admin"],
@@ -77,8 +85,6 @@ userSchema.pre(/^find/, function (next) {
   this.find({ active: { $ne: false } });
   next();
 });
-
-
 
 userSchema.methods.correctPassword = async function (
   candidatePassword,

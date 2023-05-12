@@ -2,10 +2,26 @@ const express = require("express");
 const productController = require("../controllers/productController");
 const authController = require("../controllers/authController");
 const reviewRouter = require("./reviewRoute");
+const userRouter = require("./userRoute");
 
 const productRouter = express.Router();
 
 productRouter.use("/:productId/reviews", reviewRouter);
+
+productRouter
+  .route("/addToWishlist/:id")
+  .patch(
+    authController.protect,
+    authController.restrictTo("customer", "admin"),
+    productController.addProductToWishlist
+  );
+productRouter
+  .route("/deleteFromWishlist/:id")
+  .patch(
+    authController.protect,
+    authController.restrictTo("customer", "admin"),
+    productController.removeProductFromWishlist
+  );
 
 productRouter
   .route("/")

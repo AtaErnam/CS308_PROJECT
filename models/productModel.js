@@ -12,6 +12,7 @@ const productSchema = new mongoose.Schema(
     model: { type: String, default: "" },
     description: { type: String, default: "" },
     quantity_in_stocks: { type: Number, default: 10 },
+    price: { type: Number, default: 1000 },
     warranty_status: { type: String, default: "good" },
     distributor_info: { type: String, default: "abc co." },
     category: {
