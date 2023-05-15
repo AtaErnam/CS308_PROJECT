@@ -20,6 +20,15 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(cors());
 app.options('*', cors());
+const { createProxyMiddleware } = require('http-proxy-middleware');
+app.use('/api', createProxyMiddleware({ 
+    target: 'http://localhost:3008/', //original url
+    changeOrigin: true, 
+    //secure: false,
+    onProxyRes: function (proxyRes, req, res) {
+       proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+    }
+}));
 app.use(express.json());
 
 app.use((req, res, next) => {

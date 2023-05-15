@@ -31,6 +31,10 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    discountRate: {
+      type: Number,
+      default: 0
+    }
   },
   {
     toJSON: { virtuals: true },

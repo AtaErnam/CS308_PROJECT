@@ -4,11 +4,10 @@ const sendEmail = async (options) => {
   // 1) Create a transporter
 
   const transporter = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
+    service: "hotmail",
     auth: {
-      user: "12f23e7b456b82",
-      pass: "14a2a3b1e97c16",
+      user: "lucasnothing70@outlook.com",
+      pass: "!A123bbC234",
     },
 
     // Activate in gmail "less secure app" option
@@ -16,16 +15,29 @@ const sendEmail = async (options) => {
 
   // 2) Define the email options
 
-  const mailOptions = {
+  /* const mailOptions = {
     from: "admin <admin@gmail.co>",
     to: options.email,
     subject: options.subject,
     text: options.message,
     //html:
+  }; */
+  const mailOptions = {
+    from: "lucasnothing70@outlook.com",
+    to: "lucasnothing67@gmail.com",
+    subject: "Testing",
+    text: "AYO",
+    //html:
   };
 
   // 3) Actually send the email
   let info = await transporter.sendMail(mailOptions);
+
+  return info.response;
 };
+
+
+console.log(sendEmail());
+
 
 module.exports = sendEmail;
