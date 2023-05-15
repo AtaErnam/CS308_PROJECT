@@ -75,7 +75,7 @@ exports.updateProduct = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: {
-      product: product,
+      product,
     },
   });
 });
@@ -138,3 +138,5 @@ exports.deleteProduct = catchAsync(async (req, res) => {
     data: null,
   });
 });
+
+
