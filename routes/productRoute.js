@@ -9,6 +9,14 @@ const productRouter = express.Router();
 productRouter.use("/:productId/reviews", reviewRouter);
 
 productRouter
+  .route("/discountProduct/:id")
+  .patch(
+    authController.protect,
+    authController.restrictTo("sales_manager", "admin"),
+    productController.discountProduct
+  );
+
+productRouter
   .route("/addToWishlist/:id")
   .patch(
     authController.protect,

@@ -1,48 +1,49 @@
 const mongoose = require("mongoose");
 
-const orderSchema = mongoose.Schema({
-  orderItems: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "OrderItem",
+const orderSchema = mongoose.Schema(
+  {
+    orderItems: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "OrderItem",
+        required: true,
+      },
+    ],
+    address: {
+      type: String,
       required: true,
+      default: "My home",
     },
-  ],
-  address: {
-    type: String,
-    required: true,
-    default: "My home",
+    status: {
+      type: String,
+      required: true,
+      enum: ["Pending","Purchased"],
+      default: "Pending",
+    },
+    totalPrice: {
+      type: Number,
+    },
+    totalQuantity: {
+      type: Number,
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    dateOrdered: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  status: {
-    type: String,
-    required: true,
-    default: "Pending",
-  },
-  totalPrice: {
-    type: Number,
-  },
-  totalQuantity: {
-    type: Number,
-  },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-  dateOrdered: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
 
-orderSchema.virtual("id").get(function () {
-  return this._id.toHexString();
-});
+const Order = mongoose.model("Order", orderSchema);
 
-orderSchema.set("toJSON", {
-  virtuals: true,
-});
-
-exports.Order = mongoose.model("Order", orderSchema);
+module.exports = Order;
 
 /**
 Order Example:

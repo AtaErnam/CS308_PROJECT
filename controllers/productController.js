@@ -96,7 +96,7 @@ exports.addProductToWishlist = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: {
-      product: currUser.wishlist,
+      product: user.wishlist,
     },
   });
 });
@@ -123,7 +123,7 @@ exports.removeProductFromWishlist = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: {
-      product: user,
+      user: user.wishlist,
     },
   });
 });
@@ -139,4 +139,40 @@ exports.deleteProduct = catchAsync(async (req, res) => {
   });
 });
 
+exports.discountProduct = catchAsync(async (req, res, next) => {
+  const product = await Product.findById(req.params.id);
+  const { discountRate } = req.body;
+  console.log(discountRate);
 
+  if (!product) {
+    return next(new AppError("No product found with that ID", 404));
+  } else if (!discountRate) {
+    return next(new AppError("Please enter the discount amount", 404));
+  } else if (discountRate > 100 || discountRate < 0) {
+    return next(new AppError("Discount rate has to be between 0 and 100", 403));
+  }
+
+  const DiscountedPrice = product.price - (discountRate * product.price) / 100;
+  console.log(DiscountedPrice);
+
+  if (product.price > DiscountedPrice) {
+    await Product.findByIdAndUpdate(req.params.id, {
+      discountPrice: DiscountedPrice,
+    });
+  } else {
+    await Product.findByIdAndUpdate(req.params.id, {
+      discountPrice: product.price,
+    });
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      product: product,
+    },
+  });
+});
+
+exports.purchaseProduct;
+
+exports.refundProduct;
