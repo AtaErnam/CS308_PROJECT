@@ -103,6 +103,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   // 2) Validate token
+  console.log(token)
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   //console.log(decoded);
 

@@ -173,6 +173,6 @@ exports.discountProduct = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.purchaseProduct;
 
-exports.refundProduct;
+
+

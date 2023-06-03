@@ -9,6 +9,8 @@ const categoryRouter = require("./routes/categoryRoute");
 const productRouter = require("./routes/productRoute");
 const reviewRouter = require("./routes/reviewRoute");
 const orderRouter = require("./routes/orderRoute");
+const orderItemRouter = require("./routes/orderItemRoute");
+const refundRouter = require("./routes/refundRoute");
 
 const app = express();
 
@@ -19,7 +21,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(cors());
-app.options('*', cors());
+app.options("*", cors());
 /* const { createProxyMiddleware } = require('http-proxy-middleware');
 app.use('/api', createProxyMiddleware({ 
     target: 'http://localhost:3008/', //original url
@@ -54,7 +56,8 @@ app.use("/api/v1/product", productRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/orders", orderRouter);
-
+app.use("/api/v1/orderItems", orderItemRouter);
+app.use("/api/v1/refund", refundRouter);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Cant find ${req.originalUrl} on this server!`, 404));

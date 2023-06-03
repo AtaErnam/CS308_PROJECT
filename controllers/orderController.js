@@ -49,6 +49,9 @@ exports.createOrder = catchAsync(async (req, res, next) => {
       return newOrderItem._id;
     })
   );
+
+  console.log(typeof orderItemsIds);
+
   const orderItemsIdsResolved = await orderItemsIds;
 
   const totalPrices = await Promise.all(
@@ -122,6 +125,48 @@ exports.purchaseOrder = catchAsync(async (req, res) => {
   if (!order) {
     return next(new AppError("No order found with that ID", 404));
   }
+  console.log(order.orderItems);
+
+  const orderItemsIds = Promise.all(
+    order.orderItems.map(async (orderItem) => {
+      console.log("----");
+      console.log(req.user.id);
+      console.log("----");
+      let newOrderItem = await OrderItem.findByIdAndUpdate(orderItem, {
+        user: req.user.id,
+        dateOrdered: Date.now(),
+      });
+
+      console.log(newOrderItem);
+      return newOrderItem._id;
+    })
+  );
+
+  const orderItemsIdsResolved = await orderItemsIds;
+
+  await Promise.all(
+    orderItemsIdsResolved.map(async (orderItemId) => {
+      const orderItem = await OrderItem.findById(orderItemId).populate(
+        "product",
+        "quantity"
+      );
+
+      console.log(orderItem.product.id);
+      const currOrderProd = await Product.findById(orderItem.product.id);
+      console.log(typeof currOrderProd.quantity_in_stocks);
+      console.log(typeof orderItem.quantity);
+
+      let updatedQuantity =
+        currOrderProd.quantity_in_stocks - orderItem.quantity;
+      console.log(updatedQuantity);
+      await Product.findByIdAndUpdate(orderItem.product.id, {
+        quantity_in_stocks: updatedQuantity,
+      });
+
+      const totalQuantity = orderItem.quantity;
+      return totalQuantity;
+    })
+  );
 
   res.status(200).json({
     status: "success",

@@ -9,6 +9,14 @@ const orderItemSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  dateOrdered: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const OrderItem = mongoose.model("OrderItem", orderItemSchema);
