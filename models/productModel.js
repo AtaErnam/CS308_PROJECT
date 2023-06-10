@@ -45,6 +45,13 @@ const productSchema = new mongoose.Schema(
 productSchema.index({ price: 1, ratingsAverage: -1 });
 productSchema.index({ slug: 1 });
 
+
+/* productSchema.virtual("orderItem", {
+  ref: "OrderItem",
+  foreignField: "product",
+  localField: "_id",
+}); */
+
 productSchema.pre(/^find/, function (next) {
   this.populate({
     path: "category",

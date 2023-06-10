@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const refundSchema = mongoose.Schema(
   {
     orderItem: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.ObjectId,
       ref: "OrderItem",
       required: true,
     },
@@ -22,12 +22,12 @@ const refundSchema = mongoose.Schema(
       type: Number,
     },
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.Schema.ObjectId,
       ref: "User",
     },
     dateCreated: {
       type: Date,
-      default: Date.now,
+      default: Date.now(),
     },
   },
   {

@@ -6,17 +6,29 @@ const orderItemSchema = mongoose.Schema({
     required: true,
   },
   product: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.ObjectId,
     ref: "Product",
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.ObjectId,
     ref: "User",
   },
   dateOrdered: {
     type: Date,
-    default: Date.now,
+    default: Date.now(),
   },
+});
+
+orderItemSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "product",
+    select: "productName price",
+  }).populate({
+    path: "user",
+    select: "name photo",
+  });
+
+  next();
 });
 
 const OrderItem = mongoose.model("OrderItem", orderItemSchema);

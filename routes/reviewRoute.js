@@ -12,8 +12,8 @@ router.route("/approved").get(reviewController.getAllApprovedReviews);
 router
   .route("/")
   .get(
-    authController.restrictTo("product_manager"),
-    reviewController.getAllReviews
+    authController.restrictTo("product_manager","admin"),
+    reviewController.getAllApprovedReviews
   )
   .post(
     authController.restrictTo("customer"),

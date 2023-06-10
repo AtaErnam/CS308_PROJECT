@@ -4,7 +4,9 @@ const Product = require("../models/productModel");
 const factory = require("./handlerFactory");
 const AppError = require("../utils/appError");
 const APIFeatures = require("../utils/apiFeatures");
+const InvoiceGenerator = require("../utils/pdf");
 const OrderItem = require("../models/orderItemModel");
+const Invoice = require("../models/invoiceModel");
 
 exports.refundOrderItem = catchAsync(async (req, res, next) => {
   let refundOrderItem = req.body.orderItem;
@@ -15,11 +17,11 @@ exports.refundOrderItem = catchAsync(async (req, res, next) => {
 
   const timePassed = refundOrderItem.dateOrdered;
   timePassed.setMonth(timePassed.getMonth() + 1);
-  if (Date.now() > timePassed) {
+  /* if (Date.now() > timePassed) {
     return next(
       new AppError("This product has expired its time for refund", 404)
     );
-  }
+  } */
 
   let refund = new Refund({
     orderItem: refundOrderItem,
@@ -137,16 +139,30 @@ exports.approveRefund = catchAsync(async (req, res, next) => {
     return next(new AppError("No document found with that ID", 404));
   }
 
-  console.log(refund.orderItem);
   const refundedOrderItem = await OrderItem.findById(refund.orderItem);
+  console.log(refundedOrderItem);
   const refundedProduct = await Product.findById(refundedOrderItem.product);
-
-  console.log(refundedProduct);
 
   refundedProduct.quantity_in_stocks = refundedProduct.quantity_in_stocks + 1;
   refundedProduct.save();
   refund.status = "Approved";
   refund.save();
+
+  let invoice = new Invoice({
+    orderItems: refundedOrderItem,
+    address: refund.address,
+    status: "Refunded",
+    totalPrice: refundedProduct.price,
+    user: req.user,
+    invoiceType: "RefundApproval",
+  });
+
+  console.log("------------------------STUFF ABOUT INVOICE");
+  console.log(invoice);
+  console.log("------------------------STUFF ABOUT INVOICE");
+
+  const genPDF = new InvoiceGenerator(invoice);
+  genPDF.generate();
 
   res.status(200).json({
     status: "success",

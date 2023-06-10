@@ -6,6 +6,7 @@ const APIFeatures = require("../utils/apiFeatures");
 
 exports.getAllApprovedReviews = catchAsync(async (req, res, next) => {
   // To allow for nested GET reviews on Tour
+  console.log("burh")
   let filter = { isApproved: { $ne: false } };
   if (req.params.reviewId) {
     console.log("lol");
@@ -32,7 +33,7 @@ exports.getAllApprovedReviews = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getAllReviews = catchAsync(async (req, res, next) => {
+/* exports.getAllReviews = catchAsync(async (req, res, next) => {
   // To allow for nested GET reviews on Tour
   let filter = {};
   if (req.params.reviewId) {
@@ -57,9 +58,9 @@ exports.getAllReviews = catchAsync(async (req, res, next) => {
       data: review,
     },
   });
-});
+}); */
 
-//factory.getAll(Review);
+exports.getAllReviews = factory.getAll(Review);
 
 exports.setProductUserIds = (req, res, next) => {
   // Allow nested routes
@@ -70,7 +71,6 @@ exports.setProductUserIds = (req, res, next) => {
 
 exports.getReview = catchAsync(async (req, res, next) => {
   let query = Review.findById(req.params.id);
-  if (popOptions) query = query.populate(popOptions);
   const review = await query;
   // Tour.findOne({ _id: req.params.id })
   console.log(review);

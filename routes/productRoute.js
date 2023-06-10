@@ -36,7 +36,7 @@ productRouter
   .get(productController.getAllProduct)
   .post(
     authController.protect,
-    authController.restrictTo("admin"),
+    authController.restrictTo("customer","product_manager","admin"),
     productController.createProduct
   );
 
@@ -45,12 +45,12 @@ productRouter
   .get(productController.getProduct)
   .patch(
     authController.protect,
-    authController.restrictTo("admin"),
+    authController.restrictTo("sales_manager","product_manager","admin"),
     productController.updateProduct
   )
   .delete(
     authController.protect,
-    authController.restrictTo("admin"),
+    authController.restrictTo("product_manager","admin"),
     productController.deleteProduct
   );
 

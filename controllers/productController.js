@@ -89,6 +89,11 @@ exports.addProductToWishlist = catchAsync(async (req, res, next) => {
 
   const currUser = await User.findById(req.user.id);
   console.log(currUser.wishlist);
+
+  if (currUser.wishlist.includes(product.id)) {
+    return next(new AppError("Product is already in the wishlist", 404));
+  }
+
   currUser.wishlist.push(product);
   console.log(currUser.wishlist);
   const user = await User.findByIdAndUpdate(req.user.id, currUser);
@@ -165,6 +170,15 @@ exports.discountProduct = catchAsync(async (req, res, next) => {
     });
   }
 
+  const allUsers = await User.find();
+
+  for (let i = 0; i < allUsers.length; i++) {
+    const currUser = allUsers[i];
+    if (currUser.wishlist.includes(product.id)) {
+      console.log("SENT MAIL")
+    }
+  }
+
   res.status(200).json({
     status: "success",
     data: {
@@ -172,7 +186,3 @@ exports.discountProduct = catchAsync(async (req, res, next) => {
     },
   });
 });
-
-
-
-
